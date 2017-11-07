@@ -21,7 +21,6 @@
 
             var background = "rgba(0, 0, 0, 1)";
 
-            var step = 10;
             function draw() {
                 for (var y = -height / 2; y < height / 2; y++) {
                 for (var x = -width / 2; x < width / 2; x++) {
@@ -29,9 +28,11 @@
                         ctx.fillRect(x + width / 2, y + height / 2, 1, 1);
                     }
                 }
-                step = step <= 5 ? 10 : --step;
+//                var point2d = rotateAroundPoint2d([triangle.geometry[1][1], triangle.geometry[1][2]], [triangle.geometry[2][1], triangle.geometry[2][2]], 1);
+                triangle.geometry[0][1] += 1;
+                triangle.geometry[0][2] += 1;
+                setTimeout(draw, 10);
             }
-//            setInterval(draw, 500);
             draw();
 
             function determinePixel(x, y) {
@@ -45,6 +46,18 @@
                     }
                 }
                 return result;
+            }
+
+            function rotateAroundPoint2d(point, position, angle) {
+                var sin = Math.sin(angle * Math.PI / 180);
+                var cos = Math.cos(angle * Math.PI / 180);
+                var dx = position[0] - point[0];
+                var dy = position[1] - point[1];
+
+                return {
+                    x: point[0] + (dx * cos - dy * sin),
+                    y: point[0] + (dx * sin - dy * cos)
+                }
             }
         }
     </script>
