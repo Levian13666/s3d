@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vector.js"></script>
+    <script src="js/engine.js"></script>
+    <script type="text/javascript">
+        function run() {
+            var width = 300;
+            var height = 200;
+
+            var canvas = document.getElementById('canvas');
+            var ctx = canvas.getContext('2d');
+
+            var objectPull = [];
+
+            var camera = [0, 0, 0];
+            var triangle = {geometry: [[0, 0, 100], [50, 0, 100], [50, 50, 100]], material: 'rgba(256, 0, 0, 1)'};
+            objectPull.push(triangle);
+
+            var background = "rgba(0, 0, 0, 1)";
+
+            var step = 10;
+            function draw() {
+                for (var y = -height / 2; y < height / 2; y++) {
+                for (var x = -width / 2; x < width / 2; x++) {
+                        ctx.fillStyle = determinePixel(x, y);
+                        ctx.fillRect(x + width / 2, y + height / 2, 1, 1);
+                    }
+                }
+                step = step <= 5 ? 10 : --step;
+            }
+//            setInterval(draw, 500);
+            draw();
+
+            function determinePixel(x, y) {
+                var result = background;
+                for (var i = 0; i < objectPull.length; i++) {
+                    var check = rayTriangleIntersect([x, y, 0], [x, y, 500], objectPull[i].geometry);
+                    console.log(check);
+                    if (check) {
+                        result = objectPull[i].material;
+                        break;
+                    }
+                }
+                return result;
+            }
+        }
+    </script>
+</head>
+<body onload="run()">
+<canvas id="canvas" width="300" height="200" style='background-color:black; border: 1px solid black;'></canvas>
+</body>
+</html>
